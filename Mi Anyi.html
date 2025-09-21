@@ -14,37 +14,60 @@
   --bg: linear-gradient(135deg,#2b1055,#7597de,#ff8a00);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",sans-serif;}
+html, body {
+  height: 100%;
+}
 body{
   min-height:100vh;
+  min-width:100vw;
   background:var(--bg);
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:12px;
+  padding:0;
   overflow:hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Centrado absoluto y adaptación responsiva */
+.main-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* container */
 .container{
   width:100%;
-  max-width:1100px;
+  max-width:440px;
   background:rgba(255,255,255,0.95);
   border-radius:20px;
-  padding:24px;
+  padding:32px 20px 28px 20px;
   box-shadow:0 20px 60px rgba(0,0,0,0.4);
   border:6px solid var(--gold);
   text-align:center;
   z-index:10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin:auto;
+  min-width:300px;
 }
 
 /* Texto con neón */
 .love-text .main{
   font-weight:900;
-  font-size:clamp(2.5rem, 11vw, 5.5rem);
+  font-size:clamp(2.1rem, 8vw, 3.4rem);
   background:linear-gradient(90deg,#ff3366,#ff9933,#ffd166);
   -webkit-background-clip:text;
   color:transparent;
   animation: heartbeat 2s infinite, neonGlow 3s infinite;
+  margin-bottom:16px;
+  line-height:1.1;
 }
 @keyframes heartbeat{
   0%,100%{transform:scale(1)}
@@ -61,8 +84,11 @@ body{
 
 /* Imagen */
 .image-card{
-  margin:20px auto;
-  max-width:480px;
+  margin:16px auto 0 auto;
+  max-width:340px;
+  width:100%;
+  display: flex;
+  justify-content: center;
 }
 .image-card img{
   width:100%;
@@ -76,14 +102,20 @@ body{
 }
 
 /* info */
-.music-info{margin-top:10px;font-size:1rem;font-weight:600;color:#3a2063;}
-/* frase inferior */
+.music-info{
+  margin-top:16px;
+  font-size:1.06rem;
+  font-weight:600;
+  color:#3a2063;
+  text-align:center;
+}
 .footer-message{
-  margin-top:26px;
-  font-size:1.2rem;
+  margin-top:24px;
+  font-size:1.13rem;
   color:#ff4d6d;
   font-weight:bold;
   letter-spacing:1px;
+  text-align:center;
 }
 
 /* efectos */
@@ -98,15 +130,17 @@ body{
 
 <canvas id="fireworksCanvas"></canvas>
 
-<div class="container">
-  <div class="love-text">
-    <div class="main">TE AMO<br>MI ANYELI</div>
+<div class="main-wrapper">
+  <div class="container">
+    <div class="love-text">
+      <div class="main">TE AMO<br>MI ANYELI</div>
+    </div>
+    <div class="image-card">
+      <img src="https://floresumaq.com/wp-content/uploads/2024/03/Fotos-paginas-7.png" alt="Flores">
+    </div>
+    <div class="music-info" id="status">Haz clic en cualquier parte para escuchar la música y ver la magia ✨</div>
+    <div class="footer-message">Siempre juntos, mi amor 💖</div>
   </div>
-  <div class="image-card">
-    <img src="https://floresumaq.com/wp-content/uploads/2024/03/Fotos-paginas-7.png" alt="Flores">
-  </div>
-  <div class="music-info" id="status">Haz clic en cualquier parte para escuchar la música y ver la magia ✨</div>
-  <div class="footer-message">Siempre juntos, mi amor 💖</div>
 </div>
 
 <!-- AUDIO LOCAL SIN CONTROLES -->
@@ -116,14 +150,11 @@ body{
 // --- Música sin controles y reintento al tocar si terminó ---
 const musica = document.getElementById("musica");
 
-// Estado de reproducción (para efectos visuales)
 function updateStatus(t) {
   document.getElementById("status").textContent = t;
 }
 
-// Tocar = reproducir o reiniciar si terminó
 document.addEventListener("click", () => {
-  // Si está pausada y terminó (o nunca empezó), reinicia desde el principio
   if (musica.paused) {
     if (musica.currentTime === musica.duration || musica.currentTime === 0) {
       musica.currentTime = 0;
